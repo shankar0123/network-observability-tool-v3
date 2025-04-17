@@ -25,12 +25,6 @@ graph LR
     E[mtr_probe.py] --> B
     F[bgp_monitor.py] --> B
     G[registry_updater.py] --> B
-    style A fill:#f9f,stroke:#333,stroke-width:2px
-    style C fill:#f9f,stroke:#333,stroke-width:2px
-    style D fill:#f9f,stroke:#333,stroke-width:2px
-    style E fill:#f9f,stroke:#333,stroke-width:2px
-    style F fill:#f9f,stroke:#333,stroke-width:2px
-    style G fill:#f9f,stroke:#333,stroke-width:2px
     end
     subgraph Kafka_Stack_Docker_Compose
     B(Kafka) --> H(Telegraf)
@@ -52,8 +46,6 @@ graph LR
     K -- Replay Metrics --> I
     M -- Deployed Probes --> Global_Probe_Agents_VMs
 
-    classDef component fill:#ccf,stroke:#333,stroke-width:2px
-    class Kafka Stack,Visualization & Alerting,Replay & Auditing,Infrastructure Automation component
 ```
 
 ### Project Structure
