@@ -18,7 +18,7 @@ Probes run from distributed VMs (POPs), directly at the OS/systemd level to prev
 
 ```mermaid
 graph LR
-    subgraph Global Probe Agents (VMs)
+    subgraph Global_Probe_Agents_VMs
     A[icmp_probe.py] --> B(Kafka)
     C[dns_probe.py] --> B
     D[http_probe.py] --> B
@@ -450,3 +450,10 @@ The `kafka_consumer.py` tool allows you to replay historical metrics data from K
 *   You can replay data to a different InfluxDB bucket by using the `--influxdb-bucket` option (e.g., for historical data analysis).
 
 This replay tool provides a flexible way to re-ingest historical network monitoring data for various purposes, such as testing, analysis, and backfilling data in your InfluxDB v2 instance.
+
+---
+## Author
+
+[shankar0123](https://github.com/shankar0123)
+
+Feel free to contribute to this project or report any issues on GitHub.
