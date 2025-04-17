@@ -32,18 +32,18 @@ graph LR
     style F fill:#f9f,stroke:#333,stroke-width:2px
     style G fill:#f9f,stroke:#333,stroke-width:2px
     end
-    subgraph Kafka Stack (Docker Compose)
+    subgraph Kafka_Stack_Docker_Compose
     B(Kafka) --> H(Telegraf)
     H(Telegraf) --> I(InfluxDB v2)
     I(InfluxDB v2) --> J(Grafana)
     end
-    subgraph Visualization & Alerting
+    subgraph Visualization_Alerting
     J(Grafana)
     end
-    subgraph Replay & Auditing
+    subgraph Replay_Auditing
     K[kafka_consumer.py] --> I
     end
-    subgraph Infrastructure Automation
+    subgraph Infrastructure_Automation
     L[Terraform] --> M(POP VMs)
     N[Ansible] --> M
     end
