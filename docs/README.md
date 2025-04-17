@@ -444,8 +444,5 @@ The `kafka_consumer.py` tool allows you to replay historical metrics data from K
 This replay tool provides a flexible way to re-ingest historical network monitoring data for various purposes, such as testing, analysis, and backfilling data in your InfluxDB v2 instance.
 
 ---
-## Author
-
-[shankar0123](https://github.com/shankar0123)
 
 Feel free to contribute to this project or report any issues on GitHub.
