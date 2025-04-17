@@ -1,0 +1,11 @@
+[Unit]
+Description=Run BGP Route Monitor Probe every 5 minutes
+
+[Timer]
+Unit=bgp_monitor.service
+OnCalendar=*-*-* *:0/5:00
+# OnCalendar=*:0/5 # Alternative for every 5 minutes
+Persistent=true
+
+[Install]
+WantedBy=timers.target

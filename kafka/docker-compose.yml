@@ -1,0 +1,85 @@
+version: '3.8'
+
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+      - "9999:9999"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,SASL_SSL://kafka:9093,PLAINTEXT_HOST://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT,SASL_SSL:SASL_SSL
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_SASL_MECHANISM_INTER_BROKER_PROTOCOL: PLAIN
+      KAFKA_SASL_MECHANISM_CONTROLLER_PROTOCOL: PLAIN
+      KAFKA_SECURITY_INTER_BROKER_PROTOCOL: PLAINTEXT
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER,SASL_SSL
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,SASL_SSL://0.0.0.0:9093,CONTROLLER://0.0.0.0:9090
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9090
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_NODE_ID: 1
+      KAFKA_CONTROLLER_ID: 1
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_AUTHORIZER_CLASS_NAME: kafka.security.authorizer.AclAuthorizer
+      KAFKA_ALLOW_EVERYONE_IF_NO_ACL_FOUND: "false"
+      KAFKA_SUPER_USERS: User:admin
+      KAFKA_SASL_ENABLED_MECHANISMS: PLAIN
+
+  telegraf:
+    image: telegraf:latest
+    depends_on:
+      - kafka
+      - influxdb
+    volumes:
+      - ../telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+    environment:
+      INFLUXDB_URL: http://influxdb:8086
+      INFLUXDB_TOKEN: ${INFLUXDB_TOKEN}
+      INFLUXDB_ORG: ${INFLUXDB_ORG}
+      INFLUXDB_BUCKET: network_metrics
+
+  influxdb:
+    image: influxdb:2.7
+    ports:
+      - "8086:8086"
+    environment:
+      INFLUXDB_ADMIN_USER: admin
+      INFLUXDB_ADMIN_PASSWORD: password123
+      INFLUXDB_ORG: monitoring_org
+      INFLUXDB_BUCKET: network_metrics
+      INFLUXDB_TOKEN: initial_token # This will be replaced by Telegraf's token
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    depends_on:
+      - influxdb
+    volumes:
+      - ../grafana/grafana_dashboards:/var/lib/grafana/dashboards
+    environment:
+      GF_AUTH_ADMIN_USER: admin
+      GF_AUTH_ADMIN_PASSWORD: password123
+      GF_DASHBOARDS_PROVIDERS_ENABLE_UPDATE: true
+      GF_DASHBOARDS_PROVIDERS_0_NAME: 'default'
+      GF_DASHBOARDS_PROVIDERS_0_ORG_ID: 1
+      GF_DASHBOARDS_PROVIDERS_0_FOLDER: ''
+      GF_DASHBOARDS_PROVIDERS_0_TYPE: file
+      GF_DASHBOARDS_PROVIDERS_0_DISABLE_DELETE_PROTECTION: true
+      GF_DASHBOARDS_PROVIDERS_0_ALLOW_UI_UPDATES: true
+      GF_DASHBOARDS_PROVIDERS_0_PATH: /var/lib/grafana/dashboards
+      KAFKA_USERNAME: kafka_user
+      KAFKA_PASSWORD: kafka_password

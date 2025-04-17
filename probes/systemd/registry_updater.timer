@@ -1,0 +1,10 @@
+[Unit]
+Description=Run Agent Registry Updater on boot
+
+[Timer]
+Unit=registry_updater.service
+OnBootSec=15sec # Run 15 seconds after boot
+Persistent=false
+
+[Install]
+WantedBy=timers.target

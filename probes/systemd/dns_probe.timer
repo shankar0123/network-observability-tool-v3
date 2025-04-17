@@ -1,0 +1,11 @@
+[Unit]
+Description=Run DNS Resolver Probe every minute
+
+[Timer]
+Unit=dns_probe.service
+OnCalendar=*-*-* *:*:00
+# OnCalendar=minutely # Alternative for every minute
+Persistent=true
+
+[Install]
+WantedBy=timers.target

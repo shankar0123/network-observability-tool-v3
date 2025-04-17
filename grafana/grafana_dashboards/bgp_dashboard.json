@@ -1,0 +1,228 @@
+{
+  "__inputs": [],
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "9.0.0"
+    },
+    {
+      "type": "datasource",
+      "id": "influxdb",
+      "name": "InfluxDB",
+      "version": "9.0.0"
+    }
+  ],
+  "annotations": {
+    "list": []
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "Pz8rYvYnz"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "legend": {
+          "displayMode": "inline",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "9.5.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "Pz8rYvYnz"
+          },
+          "refId": "A",
+          "query": "from(bucket: \\\"\\${INFLUXDB_BUCKET}\\\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \\\"bgp.updates\\\")\n  |> filter(fn: (r) => r._field == \\\"prefix\\\")\n  |> filter(fn: (r) => r.probe_id == \\\"\\${probe_id}\\\")\n  |> filter(fn: (r) => r.prefix == \\\"\\${prefix}\\\")\n  |> count()"
+        }
+      ],
+      "title": "BGP Route Updates Count",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "Pz8rYvYnz"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "legend": {
+          "displayMode": "inline",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "9.5.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "Pz8rYvYnz"
+          },
+          "refId": "A",
+          "query": "from(bucket: \\\"\\${INFLUXDB_BUCKET}\\\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \\\"bgp.updates\\\")\n  |> filter(fn: (r) => r._field == \\\"origin_asn\\\")\n  |> filter(fn: (r) => r.probe_id == \\\"\\${probe_id}\\\")\n  |> filter(fn: (r) => r.prefix == \\\"\\${prefix}\\\")\n  |> last()"
+        }
+      ],
+      "title": "BGP Origin ASN (Last Value)",
+      "type": "timeseries"
+    }
+  ],
+  "refresh": "5s",
+  "schemaVersion": 37,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "text": "all",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "influxdb",
+          "uid": "Pz8rYvYnz"
+        },
+        "definition": "from(bucket: \\\"\\${INFLUXDB_BUCKET}\\\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \\\"bgp.updates\\\")\n  |> group(columns: [\\\"probe_id\\\"])\n  |> distinct(column: \\\"probe_id\\\")",
+        "description": null,
+        "error": null,
+        "hide": 0,
+        "includeAll": true,
+        "multi": true,
+        "name": "probe_id",
+        "options": [],
+        "query": "from(bucket: \\\"\\${INFLUXDB_BUCKET}\\\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \\\"bgp.updates\\\")\n  |> group(columns: [\\\"probe_id\\\"])\n  |> distinct(column: \\\"probe_id\\\")",
+        "refresh": 1,
+        "regex": "",
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTagsAsFilters": false
+      },
+      {
+        "current": {
+          "text": "all",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "influxdb",
+          "uid": "Pz8rYvYnz"
+        },
+        "definition": "from(bucket: \\\"\\${INFLUXDB_BUCKET}\\\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \\\"bgp.updates\\\")\n  |> group(columns: [\\\"prefix\\\"])\n  |> distinct(column: \\\"prefix\\\")",
+        "description": null,
+        "error": null,
+        "hide": 0,
+        "includeAll": true,
+        "multi": true,
+        "name": "prefix",
+        "options": [],
+        "query": "from(bucket: \\\"\\${INFLUXDB_BUCKET}\\\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \\\"bgp.updates\\\")\n  |> group(columns: [\\\"prefix\\\"])\n  |> distinct(column: \\\"prefix\\\")",
+        "refresh": 1,
+        "regex": "",
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTagsAsFilters": false
+      }
+    ]
+  },
+  "time смещение": {
+    " смещение": "1h"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ],
+    "time_options": [
+      "5m",
+      "15m",
+      "1h",
+      "6h",
+      "12h",
+      "24h",
+      "2d",
+      "7d",
+      "30d"
+    ]
+  },
+  "timezone": "",
+  "title": "BGP Dashboard",
+  "uid": "bgpdashboard",
+  "version": 1
+}

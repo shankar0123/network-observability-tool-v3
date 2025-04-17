@@ -1,0 +1,11 @@
+[Unit]
+Description=Run ICMP Ping Probe every minute
+
+[Timer]
+Unit=icmp_probe.service
+OnCalendar=*-*-* *:*:00
+# OnCalendar=minutely # Alternative for every minute
+Persistent=true
+
+[Install]
+WantedBy=timers.target

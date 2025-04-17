@@ -1,0 +1,6 @@
+---
+# vars file for ansible-probe-setup
+
+kafka_brokers: "kafka:9093"
+probe_location: "New York"
+ssh_user: "root" # Default SSH user, change if needed

@@ -1,0 +1,57 @@
+---
+# tasks file for ansible-probe-setup
+
+- name: Install Python3 and pip
+  apt:
+    name: 
+      - python3
+      - python3-pip
+    state: present
+    update_cache: yes
+
+- name: Install Python packages
+  pip:
+    name:
+      - kafka-python
+      - pybgpstream
+      - requests
+      - dnspython
+    state: present
+    executable: pip3
+
+- name: Create /probes directory
+  file:
+    path: /probes
+    state: directory
+    mode: '0755'
+
+- name: Copy probe scripts to /probes
+  copy:
+    src: ../../probes/
+    dest: /probes/
+    remote_src: no
+    mode: '0755'
+    exclude:
+      - systemd
+      - cron
+
+- name: Copy systemd service units
+  copy:
+    src: ../../probes/systemd/
+    dest: /etc/systemd/system/
+    remote_src: no
+    mode: '0644'
+
+- name: Enable and start systemd services
+  systemd:
+    name: "{{ item }}"
+    state: started
+    enabled: yes
+    daemon_reload: yes
+  loop:
+    - icmp_probe.service
+    - dns_probe.service
+    - http_probe.service
+    - mtr_probe.service
+    - bgp_monitor.service
+    - registry_updater.service

@@ -1,0 +1,14 @@
+[Unit]
+Description=ICMP Ping Probe
+After=network.target
+
+[Service]
+WorkingDirectory=/probes/
+ExecStart=/usr/bin/env python3 /probes/icmp_probe.py --probe-id=icmp-probe-01 --location="New York" --target=8.8.8.8 --kafka-brokers=kafka:9093
+User=shankar # Replace with appropriate user
+Restart=on-failure
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

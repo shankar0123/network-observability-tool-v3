@@ -1,0 +1,14 @@
+[Unit]
+Description=HTTP Uptime Probe
+After=network.target
+
+[Service]
+WorkingDirectory=/probes/
+ExecStart=/usr/bin/env python3 /probes/http_probe.py --probe-id=http-probe-01 --location="New York" --url=http://google.com --kafka-brokers=kafka:9093
+User=shankar # Replace with appropriate user
+Restart=on-failure
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

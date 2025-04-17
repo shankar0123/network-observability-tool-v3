@@ -1,0 +1,14 @@
+[Unit]
+Description=MTR Traceroute Probe
+After=network.target
+
+[Service]
+WorkingDirectory=/probes/
+ExecStart=/usr/bin/env python3 /probes/mtr_probe.py --probe-id=mtr-probe-01 --location="New York" --target=8.8.8.8 --kafka-brokers=kafka:9093
+User=shankar # Replace with appropriate user
+Restart=on-failure
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

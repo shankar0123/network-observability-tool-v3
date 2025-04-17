@@ -1,0 +1,14 @@
+[Unit]
+Description=DNS Resolver Probe
+After=network.target
+
+[Service]
+WorkingDirectory=/probes/
+ExecStart=/usr/bin/env python3 /probes/dns_probe.py --probe-id=dns-probe-01 --location="New York" --resolver=8.8.8.8 --query=google.com --kafka-brokers=kafka:9093
+User=shankar # Replace with appropriate user
+Restart=on-failure
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
