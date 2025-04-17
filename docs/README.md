@@ -50,7 +50,7 @@ graph LR
     B -- "icmp.metrics, dns.metrics, http.metrics, mtr.metrics, bgp.updates, agent.registry, probe.health" --> H
     J -- Dashboards & Alerts --> User
     K -- Replay Metrics --> I
-    M -- Deployed Probes --> Global Probe Agents (VMs)
+    M -- Deployed Probes --> Global_Probe_Agents_VMs
 
     classDef component fill:#ccf,stroke:#333,stroke-width:2px
     class Kafka Stack,Visualization & Alerting,Replay & Auditing,Infrastructure Automation component
